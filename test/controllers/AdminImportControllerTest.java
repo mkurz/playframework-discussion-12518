@@ -21,7 +21,7 @@ import static play.test.Helpers.OK;
 import static play.test.Helpers.contentAsString;
 import static play.api.test.CSRFTokenHelper.addCSRFToken;
 
-public class AdminImportControllerTest  {
+public class AdminImportControllerTest extends WithApplication {
     private static final String TEST_FILE_CONTENT = "{  \"id\" : 32,  \"adminName\" : \"email-program\", \"adminDescription\" : \"\"}";
 
     @Test
@@ -45,7 +45,7 @@ public class AdminImportControllerTest  {
                                 play.libs.Files.singletonTemporaryFileCreator(),
                                 app.asScala().materializer()));
 
-        Result result = controller.importProgram(request.build());
+        Result result = Helpers.route(app, request);
         assertThat(result.status()).isEqualTo(OK);
         assertThat(contentAsString(result)).contains(TEST_FILE_CONTENT);
     }
